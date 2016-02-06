@@ -19,6 +19,8 @@ import android.widget.EditText;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import st.crimelog.util.TimeUtil;
+
 import static android.widget.CompoundButton.*;
 
 public class CrimeFragment extends Fragment {
@@ -55,8 +57,7 @@ public class CrimeFragment extends Fragment {
     private void setChildViews(View view) {
         titleField = (EditText) view.findViewById(R.id.crime_title);
         dateButton = (Button) view.findViewById(R.id.crime_date);
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
-        dateButton.setText(format.format(crime.getDate()));
+        dateButton.setText(TimeUtil.getDisplayDatetime(crime.getDate()));
         dateButton.setEnabled(false);
         solvedCheckBox = (CheckBox) view.findViewById(R.id.crime_solved);
     }
