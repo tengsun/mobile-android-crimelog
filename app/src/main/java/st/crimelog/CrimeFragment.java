@@ -37,18 +37,16 @@ public class CrimeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Log.d(TAG, "onCreate() called");
 
-        Log.d(TAG, "onCreate() called");
-
-        UUID crimeId = (UUID) getActivity().getIntent().getSerializableExtra(EXTRA_CRIME_ID);
+        UUID crimeId = (UUID) getArguments().getSerializable(EXTRA_CRIME_ID);
         crime = CrimeLab.getInstance(getActivity()).getCrime(crimeId);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView() called");
-
+        // Log.d(TAG, "onCreateView() called");
         View view = inflater.inflate(R.layout.fragment_crime, container, false);
 
         setChildViews(view);
@@ -72,7 +70,8 @@ public class CrimeFragment extends Fragment {
     private void setControlActions(View view) {
         titleField.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -80,7 +79,8 @@ public class CrimeFragment extends Fragment {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
 
         dateButton.addTextChangedListener(new TextWatcher() {
@@ -100,6 +100,15 @@ public class CrimeFragment extends Fragment {
                 crime.setSolved(isChecked);
             }
         });
+    }
+
+    public static CrimeFragment newInstance(UUID crimeId) {
+        Bundle args = new Bundle();
+        args.putSerializable(EXTRA_CRIME_ID, crimeId);
+
+        CrimeFragment fragment = new CrimeFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
 }
