@@ -18,6 +18,7 @@ import android.widget.EditText;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.UUID;
 
 import st.crimelog.util.TimeUtil;
 
@@ -26,6 +27,7 @@ import static android.widget.CompoundButton.*;
 public class CrimeFragment extends Fragment {
 
     private static final String TAG = "CrimeFragment";
+    public static final String EXTRA_CRIME_ID = "st.crimelog.crimeId";
 
     private Crime crime;
     private EditText titleField;
@@ -38,7 +40,8 @@ public class CrimeFragment extends Fragment {
 
         Log.d(TAG, "onCreate() called");
 
-        crime = new Crime();
+        UUID crimeId = (UUID) getActivity().getIntent().getSerializableExtra(EXTRA_CRIME_ID);
+        crime = CrimeLab.getInstance(getActivity()).getCrime(crimeId);
     }
 
     @Nullable
@@ -56,10 +59,14 @@ public class CrimeFragment extends Fragment {
 
     private void setChildViews(View view) {
         titleField = (EditText) view.findViewById(R.id.crime_title);
+        titleField.setText(crime.getTitle());
+
         dateButton = (Button) view.findViewById(R.id.crime_date);
         dateButton.setText(TimeUtil.getDisplayDatetime(crime.getDate()));
         dateButton.setEnabled(false);
+
         solvedCheckBox = (CheckBox) view.findViewById(R.id.crime_solved);
+        solvedCheckBox.setChecked(crime.isSolved());
     }
 
     private void setControlActions(View view) {
