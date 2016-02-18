@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,6 +29,7 @@ public class CrimeFragment extends Fragment {
 
     private static final String TAG = "CrimeFragment";
     public static final String EXTRA_CRIME_ID = "st.crimelog.crimeId";
+    private static final String DIALOG_DATE = "date";
 
     private Crime crime;
     private EditText titleField;
@@ -61,7 +63,6 @@ public class CrimeFragment extends Fragment {
 
         dateButton = (Button) view.findViewById(R.id.crime_date);
         dateButton.setText(TimeUtil.getDisplayDatetime(crime.getDate()));
-        dateButton.setEnabled(false);
 
         solvedCheckBox = (CheckBox) view.findViewById(R.id.crime_solved);
         solvedCheckBox.setChecked(crime.isSolved());
@@ -83,15 +84,13 @@ public class CrimeFragment extends Fragment {
             }
         });
 
-        dateButton.addTextChangedListener(new TextWatcher() {
+        dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {}
+            public void onClick(View v) {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                DatePickerFragment dialog = new DatePickerFragment();
+                dialog.show(fm, DIALOG_DATE);
+            }
         });
 
         solvedCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {

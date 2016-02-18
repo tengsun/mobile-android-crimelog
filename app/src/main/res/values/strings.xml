@@ -1,10 +1,9 @@
 <resources>
     <string name="app_name">CrimeLog</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="crime_title_hint">Pls input crime title</string>
     <string name="crime_title_label">Title</string>
     <string name="crime_date_label">Details</string>
     <string name="crime_solved">Solved?</string>
     <string name="crime_list">Crime List</string>
+    <string name="crime_date_picker">Date of crime:</string>
 </resources>
