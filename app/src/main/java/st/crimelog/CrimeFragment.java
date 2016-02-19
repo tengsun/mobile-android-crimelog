@@ -1,6 +1,8 @@
 package st.crimelog;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +21,7 @@ import android.widget.EditText;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import st.crimelog.util.TimeUtil;
@@ -30,6 +33,7 @@ public class CrimeFragment extends Fragment {
     private static final String TAG = "CrimeFragment";
     public static final String EXTRA_CRIME_ID = "st.crimelog.crimeId";
     private static final String DIALOG_DATE = "date";
+    private static final int REQUEST_DATE = 0;
 
     private Crime crime;
     private EditText titleField;
@@ -88,7 +92,8 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
-                DatePickerFragment dialog = new DatePickerFragment();
+                DatePickerFragment dialog = DatePickerFragment.newInstance(crime.getDate());
+                dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
                 dialog.show(fm, DIALOG_DATE);
             }
         });
@@ -110,4 +115,20 @@ public class CrimeFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // check result code
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+
+        // check request code
+        if (requestCode == REQUEST_DATE) {
+            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            crime.setDate(date);
+            dateButton.setText(TimeUtil.getDisplayDatetime(crime.getDate()));
+        }
+    }
 }
