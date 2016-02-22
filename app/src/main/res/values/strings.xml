@@ -6,4 +6,9 @@
     <string name="crime_solved">Solved?</string>
     <string name="crime_list">Crime List</string>
     <string name="crime_date_picker">Date of crime:</string>
+    <string name="crime_new_item">New Crime</string>
+    <string name="crime_show_subtitle">Show Subtitle</string>
+    <string name="crime_hide_subtitle">Hide Subtitle</string>
+    <string name="crime_subtitle">If you see something, say something.</string>
+    <string name="crime_delete_item">Delete</string>
 </resources>
