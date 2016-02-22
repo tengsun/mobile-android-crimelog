@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -49,6 +50,23 @@ public class CrimeListFragment extends ListFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_crime_list, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.crime_menu_new_item:
+                Crime crime = new Crime();
+                CrimeLab.getInstance(getActivity()).addCrime(crime);
+
+                Intent intent = new Intent(getActivity(), CrimePagerActivity.class);
+                intent.putExtra(CrimeFragment.EXTRA_CRIME_ID, crime.getId());
+                startActivityForResult(intent, 0);
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
