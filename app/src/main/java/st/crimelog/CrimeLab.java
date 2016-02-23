@@ -67,6 +67,10 @@ public class CrimeLab {
         return null;
     }
 
+    public void deleteCrime(Crime crime) {
+        crimes.remove(crime);
+    }
+
     public boolean saveCrimes() {
         try {
             serializer.saveCrimes(crimes);
