@@ -45,6 +45,21 @@
             android:layout_height="wrap_content"
             android:text="@string/crime_solved"
             android:id="@+id/crime_solved" />
+
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/crime_photo_label"
+        android:id="@+id/crime_photo_label"
+        android:textSize="20dp"
+        style="?android:listSeparatorTextViewStyle" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/crime_take_photo"
+        android:src="@android:drawable/ic_menu_camera" />
 
 </LinearLayout>

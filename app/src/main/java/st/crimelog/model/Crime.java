@@ -1,4 +1,4 @@
-package st.crimelog;
+package st.crimelog.model;
 
 import org.json.JSONException;
 import org.json.JSONObject;

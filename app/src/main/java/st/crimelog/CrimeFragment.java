@@ -15,10 +15,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import java.util.Date;
 import java.util.UUID;
 
+import st.crimelog.model.Crime;
+import st.crimelog.model.CrimeLab;
 import st.crimelog.util.TimeUtil;
 
 import static android.widget.CompoundButton.OnCheckedChangeListener;
@@ -34,6 +37,7 @@ public class CrimeFragment extends Fragment {
     private EditText titleField;
     private Button dateButton;
     private CheckBox solvedCheckBox;
+    private ImageButton photoButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,15 @@ public class CrimeFragment extends Fragment {
 
         solvedCheckBox = (CheckBox) view.findViewById(R.id.crime_solved);
         solvedCheckBox.setChecked(crime.isSolved());
+
+        photoButton = (ImageButton) view.findViewById(R.id.crime_take_photo);
+        photoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CrimeCameraActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setControlActions(View view) {

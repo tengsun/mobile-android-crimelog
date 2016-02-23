@@ -18,7 +18,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import st.crimelog.Crime;
+import st.crimelog.model.Crime;
 
 /**
  * Created by tengsun on 2/23/16.
