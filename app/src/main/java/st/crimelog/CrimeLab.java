@@ -26,14 +26,21 @@ public class CrimeLab {
 
     private CrimeLab(Context appContext) {
         this.appContext = appContext;
-        this.crimes = new ArrayList<Crime>();
-        for (int i = 0; i < 17; i++) {
-            Crime c = new Crime();
-            c.setTitle("Crime #" + (i + 1));
-            c.setSolved(i % 2 == 0);
-            crimes.add(c);
-        }
         this.serializer = new CrimeJSONSerializer(appContext, FILENAME);
+//        this.crimes = new ArrayList<Crime>();
+//        for (int i = 0; i < 17; i++) {
+//            Crime c = new Crime();
+//            c.setTitle("Crime #" + (i + 1));
+//            c.setSolved(i % 2 == 0);
+//            crimes.add(c);
+//        }
+        try {
+            crimes = serializer.loadCrimes();
+            Log.d(TAG, "Load " + crimes.size() + " crimes");
+        } catch (Exception e) {
+            crimes = new ArrayList<Crime>();
+            Log.e(TAG, "Error loading crimes: ", e);
+        }
     }
 
     public static CrimeLab getInstance(Context context) {

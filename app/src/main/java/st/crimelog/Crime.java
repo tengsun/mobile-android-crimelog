@@ -16,9 +16,21 @@ public class Crime {
     private Date date;
     private boolean solved;
 
+    private static final String JSON_ID = "id";
+    private static final String JSON_TITLE = "title";
+    private static final String JSON_DATE = "date";
+    private static final String JSON_SOLVED = "solved";
+
     public Crime() {
         id = UUID.randomUUID();
         date = new Date();
+    }
+
+    public Crime(JSONObject json) throws JSONException {
+        id = UUID.fromString(json.getString(JSON_ID));
+        title = json.getString(JSON_TITLE);
+        solved = json.getBoolean(JSON_SOLVED);
+        date = new Date(json.getLong(JSON_DATE));
     }
 
     public UUID getId() {
@@ -56,10 +68,10 @@ public class Crime {
 
     public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
-        json.put("id", id.toString());
-        json.put("title", title);
-        json.put("solved", solved);
-        json.put("date", date.getTime());
+        json.put(JSON_ID, id.toString());
+        json.put(JSON_TITLE, title);
+        json.put(JSON_SOLVED, solved);
+        json.put(JSON_DATE, date.getTime());
         return json;
     }
 }
