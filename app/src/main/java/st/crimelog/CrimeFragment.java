@@ -126,4 +126,10 @@ public class CrimeFragment extends Fragment {
             dateButton.setText(TimeUtil.getDisplayDatetime(crime.getDate()));
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        CrimeLab.getInstance(getActivity()).saveCrimes();
+    }
 }

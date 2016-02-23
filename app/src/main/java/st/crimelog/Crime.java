@@ -1,5 +1,8 @@
 package st.crimelog;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -49,5 +52,14 @@ public class Crime {
     @Override
     public String toString() {
         return title;
+    }
+
+    public JSONObject toJSON() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put("id", id.toString());
+        json.put("title", title);
+        json.put("solved", solved);
+        json.put("date", date.getTime());
+        return json;
     }
 }

@@ -1,20 +1,28 @@
 package st.crimelog;
 
 import android.content.Context;
+import android.util.Log;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import st.crimelog.data.CrimeJSONSerializer;
 
 /**
  * Created by tengsun on 1/28/16.
  */
 public class CrimeLab {
 
+    private static final String TAG = "CrimeLab";
+    private static final String FILENAME = "crimes.json";
+
     private static CrimeLab crimeLab;
     private Context appContext;
 
     private List<Crime> crimes;
+    private CrimeJSONSerializer serializer;
 
     private CrimeLab(Context appContext) {
         this.appContext = appContext;
@@ -25,6 +33,7 @@ public class CrimeLab {
             c.setSolved(i % 2 == 0);
             crimes.add(c);
         }
+        this.serializer = new CrimeJSONSerializer(appContext, FILENAME);
     }
 
     public static CrimeLab getInstance(Context context) {
@@ -49,6 +58,17 @@ public class CrimeLab {
             }
         }
         return null;
+    }
+
+    public boolean saveCrimes() {
+        try {
+            serializer.saveCrimes(crimes);
+            Log.d(TAG, "Save crimes to file");
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, "Error saving crimes: ", e);
+            return false;
+        }
     }
 
 }
