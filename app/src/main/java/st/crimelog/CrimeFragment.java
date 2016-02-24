@@ -2,8 +2,11 @@ package st.crimelog;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -40,6 +43,7 @@ public class CrimeFragment extends Fragment {
     private static final String DIALOG_PHOTO = "photo";
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_PHOTO = 1;
+    private static final int REQUEST_CONTACT = 2;
 
     private Crime crime;
     private EditText titleField;
@@ -85,6 +89,9 @@ public class CrimeFragment extends Fragment {
         photoView = (ImageView) view.findViewById(R.id.crime_photo_view);
 
         suspectButton = (Button) view.findViewById(R.id.crime_choose_suspect);
+        if (crime.getSuspect() != null) {
+            suspectButton.setText(crime.getSuspect());
+        }
         reportButton = (Button) view.findViewById(R.id.crime_send_report);
     }
 
@@ -143,6 +150,14 @@ public class CrimeFragment extends Fragment {
             }
         });
 
+        suspectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                startActivityForResult(intent, REQUEST_CONTACT);
+            }
+        });
+
         reportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,22 +188,39 @@ public class CrimeFragment extends Fragment {
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-
         // check request date
-        if (requestCode == REQUEST_DATE) {
+        else if (requestCode == REQUEST_DATE) {
             Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             crime.setDate(date);
             dateButton.setText(TimeUtil.getDisplayDatetime(crime.getDate()));
         }
-
         // check request photo
-        if (requestCode == REQUEST_PHOTO) {
+        else if (requestCode == REQUEST_PHOTO) {
             String fileName = data.getStringExtra(CrimeCameraFragment.EXTRA_PHOTO_FILENAME);
             if (fileName != null) {
                 Photo photo = new Photo(fileName);
                 crime.setPhoto(photo);
                 showPhoto();
             }
+        }
+        // check request contact
+        else if (requestCode == REQUEST_CONTACT) {
+            Uri contactUri = data.getData();
+
+            // specify the fields want to query
+            String[] queryFields = new String[]{ ContactsContract.Contacts.DISPLAY_NAME };
+            Cursor cursor = getActivity().getContentResolver()
+                    .query(contactUri, queryFields, null, null, null);
+
+            if (cursor.getCount() == 0) {
+                cursor.close();
+                return;
+            }
+            cursor.moveToFirst();
+            String suspect = cursor.getString(0);
+            crime.setSuspect(suspect);
+            suspectButton.setText(suspect);
+            cursor.close();
         }
     }
 
