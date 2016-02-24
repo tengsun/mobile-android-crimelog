@@ -1,17 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <SurfaceView
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:id="@+id/crime_camera_surface_view"
-        android:layout_weight="1" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="wrap_content"
+        <SurfaceView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/crime_camera_surface_view"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/crime_camera_button"
+            android:id="@+id/crime_camera_button" />
+
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/crime_camera_button"
-        android:id="@+id/crime_camera_button" />
-</LinearLayout>
+        android:id="@+id/crime_camera_progress_view"
+        android:clickable="true">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+</FrameLayout>

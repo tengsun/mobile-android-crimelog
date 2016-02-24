@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +30,11 @@ import static android.widget.CompoundButton.OnCheckedChangeListener;
 public class CrimeFragment extends Fragment {
 
     private static final String TAG = "CrimeFragment";
+
     public static final String EXTRA_CRIME_ID = "st.crimelog.crimeId";
     private static final String DIALOG_DATE = "date";
     private static final int REQUEST_DATE = 0;
+    private static final int REQUEST_PHOTO = 1;
 
     private Crime crime;
     private EditText titleField;
@@ -71,13 +74,6 @@ public class CrimeFragment extends Fragment {
         solvedCheckBox.setChecked(crime.isSolved());
 
         photoButton = (ImageButton) view.findViewById(R.id.crime_take_photo);
-        photoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CrimeCameraActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     private void setControlActions(View view) {
@@ -112,6 +108,14 @@ public class CrimeFragment extends Fragment {
                 crime.setSolved(isChecked);
             }
         });
+
+        photoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CrimeCameraActivity.class);
+                startActivityForResult(intent, REQUEST_PHOTO);
+            }
+        });
     }
 
     public static CrimeFragment newInstance(UUID crimeId) {
@@ -132,11 +136,19 @@ public class CrimeFragment extends Fragment {
             return;
         }
 
-        // check request code
+        // check request date
         if (requestCode == REQUEST_DATE) {
             Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             crime.setDate(date);
             dateButton.setText(TimeUtil.getDisplayDatetime(crime.getDate()));
+        }
+
+        // check request photo
+        if (requestCode == REQUEST_PHOTO) {
+            String fileName = data.getStringExtra(CrimeCameraFragment.EXTRA_PHOTO_FILENAME);
+            if (fileName != null) {
+                Log.i(TAG, "Got file name: " + fileName);
+            }
         }
     }
 
