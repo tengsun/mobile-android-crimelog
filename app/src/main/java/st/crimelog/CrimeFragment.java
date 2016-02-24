@@ -47,6 +47,8 @@ public class CrimeFragment extends Fragment {
     private CheckBox solvedCheckBox;
     private ImageButton photoButton;
     private ImageView photoView;
+    private Button suspectButton;
+    private Button reportButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,9 @@ public class CrimeFragment extends Fragment {
 
         photoButton = (ImageButton) view.findViewById(R.id.crime_take_photo);
         photoView = (ImageView) view.findViewById(R.id.crime_photo_view);
+
+        suspectButton = (Button) view.findViewById(R.id.crime_choose_suspect);
+        reportButton = (Button) view.findViewById(R.id.crime_send_report);
     }
 
     private void setControlActions(View view) {
@@ -135,6 +140,18 @@ public class CrimeFragment extends Fragment {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 String path = getActivity().getFileStreamPath(photo.getFileName()).getAbsolutePath();
                 PhotoFragment.newInstance(path).show(fm, DIALOG_PHOTO);
+            }
+        });
+
+        reportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, getCrimeReport());
+                intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.crime_report_subject));
+                intent = Intent.createChooser(intent, getString(R.string.crime_send_report_chooser));
+                startActivity(intent);
             }
         });
     }
@@ -202,5 +219,25 @@ public class CrimeFragment extends Fragment {
         }
         photoView.setImageDrawable(bitmap);
     }
+
+    private String getCrimeReport() {
+        String solvedString = null;
+        if (crime.isSolved()) {
+            solvedString = getString(R.string.crime_report_solved);
+        } else {
+            solvedString = getString(R.string.crime_report_unsolved);
+        }
+        String dateString = TimeUtil.getDisplayDatetime(crime.getDate());
+        String suspect = crime.getSuspect();
+        if (suspect == null) {
+            suspect = getString(R.string.crime_report_no_suspect);
+        } else {
+            suspect = getString(R.string.crime_report_suspect, suspect);
+        }
+        String report = getString(R.string.crime_report,
+                crime.getTitle(), dateString, solvedString, suspect);
+        return report;
+    }
+
 
 }

@@ -14,4 +14,13 @@
     <string name="crime_photo_label">Photo</string>
     <string name="crime_photo">Take Photo</string>
     <string name="crime_camera_button">OK</string>
+    <string name="crime_choose_suspect">Choose Suspect</string>
+    <string name="crime_send_report">Send Report</string>
+    <string name="crime_report">%1$s! The crime was discovered on %2$s. %3$s, and %4$s.</string>
+    <string name="crime_report_solved">The case is solved</string>
+    <string name="crime_report_unsolved">The case is not solved</string>
+    <string name="crime_report_no_suspect">no suspect</string>
+    <string name="crime_report_suspect">the suspect is %s</string>
+    <string name="crime_report_subject">Crime Report</string>
+    <string name="crime_send_report_chooser">Send crime report via</string>
 </resources>
