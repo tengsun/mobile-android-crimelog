@@ -62,4 +62,10 @@
         android:id="@+id/crime_take_photo"
         android:src="@android:drawable/ic_menu_camera" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/crime_photo_view"
+        android:adjustViewBounds="false" />
+
 </LinearLayout>
