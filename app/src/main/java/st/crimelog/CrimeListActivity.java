@@ -11,4 +11,9 @@ public class CrimeListActivity extends SingleFragmentActivity {
     protected Fragment createFragment() {
         return new CrimeListFragment();
     }
+
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.activity_master_detail;
+    }
 }
