@@ -143,6 +143,10 @@ public class CrimeListFragment extends ListFragment {
         callbacks = null;
     }
 
+    public void updateListUI() {
+        ((CrimeAdapter) getListAdapter()).notifyDataSetChanged();
+    }
+
     private class CrimeAdapter extends ArrayAdapter<Crime> {
 
         public CrimeAdapter(List<Crime> crimes) {

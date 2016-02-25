@@ -11,7 +11,7 @@ import st.crimelog.model.Crime;
  * Created by tengsun on 2/1/16.
  */
 public class CrimeListActivity extends SingleFragmentActivity
-        implements CrimeListFragment.Callbacks {
+        implements CrimeListFragment.Callbacks, CrimeFragment.Callbacks {
 
     @Override
     protected Fragment createFragment() {
@@ -42,5 +42,13 @@ public class CrimeListActivity extends SingleFragmentActivity
             intent.putExtra(CrimeFragment.EXTRA_CRIME_ID, crime.getId());
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onCrimeUpdated(Crime crime) {
+        FragmentManager fm = getSupportFragmentManager();
+        CrimeListFragment listFragment =
+                (CrimeListFragment) fm.findFragmentById(R.id.fragment_container);
+        listFragment.updateListUI();
     }
 }

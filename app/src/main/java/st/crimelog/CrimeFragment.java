@@ -53,6 +53,11 @@ public class CrimeFragment extends Fragment {
     private ImageView photoView;
     private Button suspectButton;
     private Button reportButton;
+    private Callbacks callbacks;
+
+    public interface Callbacks {
+        void onCrimeUpdated(Crime crime);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,6 +109,7 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 crime.setTitle(s.toString());
+                callbacks.onCrimeUpdated(crime);
             }
 
             @Override
@@ -125,6 +131,7 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 crime.setSolved(isChecked);
+                callbacks.onCrimeUpdated(crime);
             }
         });
 
@@ -192,6 +199,7 @@ public class CrimeFragment extends Fragment {
         else if (requestCode == REQUEST_DATE) {
             Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             crime.setDate(date);
+            callbacks.onCrimeUpdated(crime);
             dateButton.setText(TimeUtil.getDisplayDatetime(crime.getDate()));
         }
         // check request photo
@@ -200,6 +208,7 @@ public class CrimeFragment extends Fragment {
             if (fileName != null) {
                 Photo photo = new Photo(fileName);
                 crime.setPhoto(photo);
+                callbacks.onCrimeUpdated(crime);
                 showPhoto();
             }
         }
@@ -219,6 +228,7 @@ public class CrimeFragment extends Fragment {
             cursor.moveToFirst();
             String suspect = cursor.getString(0);
             crime.setSuspect(suspect);
+            callbacks.onCrimeUpdated(crime);
             suspectButton.setText(suspect);
             cursor.close();
         }
@@ -240,6 +250,18 @@ public class CrimeFragment extends Fragment {
     public void onStop() {
         super.onStop();
         PictureUtil.cleanImageView(photoView);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        callbacks = (Callbacks) activity;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callbacks = null;
     }
 
     private void showPhoto() {

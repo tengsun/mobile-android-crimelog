@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +14,10 @@ import java.util.UUID;
 import st.crimelog.model.Crime;
 import st.crimelog.model.CrimeLab;
 
-public class CrimePagerActivity extends AppCompatActivity {
+public class CrimePagerActivity extends AppCompatActivity
+    implements CrimeFragment.Callbacks {
+
+    private static final String TAG = "CrimePagerActivity";
 
     private ViewPager viewPager;
     private List<Crime> crimes;
@@ -56,16 +60,24 @@ public class CrimePagerActivity extends AppCompatActivity {
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                Log.d(TAG, "onPageScrolled");
+            }
 
             @Override
             public void onPageSelected(int position) {
+                Log.d(TAG, "onPageSelected");
                 Crime crime = crimes.get(position);
                 setTitle(crime.getTitle());
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {}
+            public void onPageScrollStateChanged(int state) {
+                Log.d(TAG, "onPageScrollStateChanged");
+            }
         });
     }
+
+    @Override
+    public void onCrimeUpdated(Crime crime) {}
 }
