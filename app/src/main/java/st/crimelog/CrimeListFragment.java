@@ -1,6 +1,8 @@
 package st.crimelog;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -33,6 +35,11 @@ public class CrimeListFragment extends ListFragment {
     private static final String TAG = "CrimeListFragment";
 
     private List<Crime> crimes;
+    private Callbacks callbacks;
+
+    public interface Callbacks {
+        void onCrimeSelected(Crime crime);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,9 +78,11 @@ public class CrimeListFragment extends ListFragment {
                 Crime crime = new Crime();
                 CrimeLab.getInstance(getActivity()).addCrime(crime);
 
-                Intent intent = new Intent(getActivity(), CrimePagerActivity.class);
-                intent.putExtra(CrimeFragment.EXTRA_CRIME_ID, crime.getId());
-                startActivityForResult(intent, 0);
+//                Intent intent = new Intent(getActivity(), CrimePagerActivity.class);
+//                intent.putExtra(CrimeFragment.EXTRA_CRIME_ID, crime.getId());
+//                startActivityForResult(intent, 0);
+                ((CrimeAdapter) getListAdapter()).notifyDataSetChanged();
+                callbacks.onCrimeSelected(crime);
 
                 return true;
             default:
@@ -116,9 +125,22 @@ public class CrimeListFragment extends ListFragment {
         // Log.d(TAG, c.getTitle() + " was clicked");
 
         // start crime activity
-        Intent intent = new Intent(getActivity(), CrimePagerActivity.class);
-        intent.putExtra(CrimeFragment.EXTRA_CRIME_ID, c.getId());
-        startActivity(intent);
+//        Intent intent = new Intent(getActivity(), CrimePagerActivity.class);
+//        intent.putExtra(CrimeFragment.EXTRA_CRIME_ID, c.getId());
+//        startActivity(intent);
+        callbacks.onCrimeSelected(c);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        callbacks = (Callbacks) activity;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callbacks = null;
     }
 
     private class CrimeAdapter extends ArrayAdapter<Crime> {
